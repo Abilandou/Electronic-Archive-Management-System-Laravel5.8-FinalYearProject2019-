@@ -1,0 +1,44 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.preloader-background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eee;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.textarea {
+    height: 130px;
+}
+#admin_header_login{
+    text-align: center;
+    font-size:24px;
+    color: teal;
+}
+.modal{
+    background-color: aqua;
+}
+.modal-header-text{
+    font-size:24px;
+    margin-left: 40%;
+
+}
+.required-field{
+    font-size:16px;
+    margin-left: 40%;
+
+}
