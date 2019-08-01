@@ -27,6 +27,9 @@
       <find>category</find>
     </findStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
@@ -124,7 +127,9 @@
     <option name="height" value="744" />
   </component>
   <component name="ProjectId" id="1OpsKCLDUxEbxcFI89bfHggMYlc" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
@@ -181,11 +186,22 @@
       <workItem from="1564170539313" duration="27000" />
       <workItem from="1564431693832" duration="21571000" />
       <workItem from="1564595550723" duration="15586000" />
-      <workItem from="1564685817573" duration="1700000" />
+      <workItem from="1564685817573" duration="2002000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
