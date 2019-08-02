@@ -31,7 +31,7 @@ class CategoryController extends Controller
     public function create()
     {
         //
-        $categories = Category::all();
+        $categories = Category::orderby('id', 'ASC')->paginate(10);
         return view('categories.index', ['categories'=>$categories]);
     }
 

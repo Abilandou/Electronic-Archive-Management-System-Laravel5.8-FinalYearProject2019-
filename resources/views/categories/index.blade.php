@@ -55,6 +55,7 @@
                         </table>
                     </div>
                 </div>
+                <p class="right">{{$categories->links('vendor.pagination.materializecss')}}</p>
             </div>
         </div>
     </div>

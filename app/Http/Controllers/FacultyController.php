@@ -15,7 +15,7 @@ class FacultyController extends Controller
     public function index()
     {
         //
-        $faculties = Faculty::get();
+        $faculties = Faculty::orderby('id', 'ASC')->paginate(10);
         return view('faculties.index', ['faculties' =>$faculties]);
     }
 
@@ -26,9 +26,6 @@ class FacultyController extends Controller
      */
     public function create()
     {
-        //
-        // $faculties = Faculty::get();
-        // return view('faculties.faculties', ['faculties' => $faculties]);
         return view("faculties.index");
     }
 
@@ -43,8 +40,6 @@ class FacultyController extends Controller
         //
         if($request->isMethod('post')){
             $data = $request->all();
-            // $data = json_decode(json_encode($data));
-            // echo "<pre>"; print_r($data); die;
             //validate input
             $this->validate($request, [
                 'name' => 'required|unique:faculties'
@@ -96,9 +91,10 @@ class FacultyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Faculty  $faculty
+     * @param \Illuminate\Http\Request $request
+     * @param null $id
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, $id=null)
     {

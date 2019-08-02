@@ -3,8 +3,6 @@ $(document).ready(function (){
   // Initialise tooltips
   $('.tooltipped').tooltip();
 
-
-
   // User trying to delete record
   $('a#delnow').click(function () {
     // alert('something')
@@ -17,6 +15,10 @@ $(document).ready(function (){
   // Modal Trigger For addind record
   $('#trigger').click(function () {
     $('.modal').modal()
+  })
+
+  $('#view').click(function () {
+    $('.modall').modal()
   })
 
   // Intialize select box

@@ -14,7 +14,8 @@
         "laravel/tinker": "^1.0",
         "spatie/laravel-backup": "^5.0.0",
         "spatie/laravel-permission": "^2.37",
-        "skydiver/laravel-materialize-css": "dev-master"
+        "skydiver/laravel-materialize-css": "dev-master",
+      "ext-json": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

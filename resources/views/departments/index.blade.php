@@ -32,21 +32,17 @@
                             </thead>
                             <tbody>
                             @if(count($departments) > 0)
-                                @foreach($departments as $department)
+                                @foreach($departments as $sec => $department)
                                     {{--@if(!$department->hasRole('Root')) --}}
                                     <tr class="@if($department->id % 2 == 0) @else indigo lighten-4 @endif">
                                         <td>{{ $department->id }}</td>
                                         <td>{{ $department->name }}</td>
                                         <td>
-
-                                            {{ $department->faculty_name}}
-
-
-
+                                            {{ $department->faculty_name['name'] }}
                                         </td>
                                         <td>{{ str_limit( $department->description, 100) }}</td>
                                         <td>
-                                            <a href="departments/{{$department->id}}" title="View Details" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="View Details">
+                                            <a href="departments/{{$department->id}}" id="view" title="View Details" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="View Details">
                                                 <i class="material-icons">visibility</i>
                                             </a>
                                             <a href="departments/{{ $department->id }}/edit" title="Edit Department" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Edit Department" >
@@ -85,14 +81,13 @@
             <div class="container">
                 <form method="post" action="{{ url('departments') }}" >
                     {{ csrf_field() }}
-                    <div class="form-group">
-                        <label><b>Department Name(required)</b></label>
+                    <div class="input-field">
                         <input type="text"
-                               placeholder="Enter Faculty Name"
                                name="name"
                                required
                                id="department_name"
                         >
+                        <label><b>Department Name(required)</b></label>
                     </div>
                     <div class="form-group">
                         <label><b>Department Description(optional)</b></label>

@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth']], function(){
 
 	// Department Routes
 	Route::resource('/departments', 'DepartmentController');
+    Route::get('/delete-department/{id}', 'DepartmentController@destroy');
+    Route::post('/edit-department/{id}', 'DepartmentController@update');
 
 
 

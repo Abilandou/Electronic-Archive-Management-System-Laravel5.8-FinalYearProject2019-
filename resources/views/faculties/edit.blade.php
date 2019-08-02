@@ -4,8 +4,10 @@
 
 <div class="row">
     <div class="col-sm-1 col-xs-1 col-xl-1 col-md-1">@include('snippets.sidebar')</div>
-    <div class="col-sm-11 col-xs-11 col-xl-11 col-md-11 ">
+    <div class="col-sm-1 col-xs-1 col-xl-1 col-md-1"></div>
+    <div class="col-sm-8 col-xs-8 col-xl-8 col-md-8 ">
         <h5 class="mt-4"><i><b>Editing...:  </b></i><b class="teal-text">{{ $faculty->name }}</b></h5>
+        @include('snippets.messages')
         <div class="divider"></div>
         <div class="card hoverable mr-4 ">
         <form action="{{ url('edit-faculty/'.$faculty->id) }} "  class="col-s-12" method="POST">
@@ -39,7 +41,8 @@
             </form>
         </div>
     </div>
-  </div>
+    <div class="col-sm-2 col-xs-2 col-xl-2 col-md-2"></div>
+</div>
 
 
 @endsection

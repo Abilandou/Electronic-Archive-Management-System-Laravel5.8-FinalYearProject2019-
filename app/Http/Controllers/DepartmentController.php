@@ -6,31 +6,29 @@ use App\Department;
 use Illuminate\Http\Request;
 use DB;
 use App\Faculty;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
         //
 
 
-        $departments = Department::orderby('id', 'DESC')->paginate(2);
+        $departments = Department::orderby('id', 'ASC')->paginate(10);
+
+        // Return faculty name from departments table based on foreign key constraints.(foreign key=faculty_id )
         foreach ($departments as $key => $val){
             $faculty_name = Faculty::where(['id'=>$val->faculty_id])->first();
             $departments[$key]->faculty_name = $faculty_name;
         }
         $faculties = DB::table('faculties')->get();
-//        foreach ($departments as $department)
-//            $dept_id = $department->id;
-//
-//            $faculty = DB::table('departments')->
-//            join('faculties', 'departments.faculty_id', '=', 'faculties.id')->
-//            where(['faculty_id'=>$dept_id])->first();
 
         $faculty =  Department::with('faculty')->get();
 
@@ -40,7 +38,7 @@ class DepartmentController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -51,8 +49,9 @@ class DepartmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
@@ -68,73 +67,84 @@ class DepartmentController extends Controller
             $department->description = $data['description'];
             $department->faculty_id = $data['faculty_id'];
             $department->save();
-            return redirect('/departments')->with('success', 'Department '.$data['name'].' added successfully');
-
-
-//            //Get all faculties
-//            $faculties = DB::table('faculties')->get();
-//            foreach ($faculties as $faculty)
-//                $faculty_id = $faculty;
-//
-//
-//            //Add Department name to database
-//            $addDept = Department::insert([
-//                    'name' => $data['name'],
-//                    'description' => $data['description'],
-//
-//                    $faculty_id->faculty_id = $data['faculty_id']
-//            ]);
-
-//            if($addDept){
-//                return redirect('/departments')->with('success', 'Department '.$data['name'].' added successfully');
-//            }else{
-//                return redirect()->back()->with('error', 'Sorry could not add Department, please make sure you are connected to the server');
-//            }
+            return redirect('/departments')->with('success', 'Department:  '.$data['name'].' added successfully');
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Department  $Department
-     * @return \Illuminate\Http\Response
+     * @param Department $department
+     * @return Response
      */
-    public function show(Department $department)
+    public function show($department=null)
     {
         //
+        $dept = Department::where(['id'=>$department])->first();
+        return view('departments.show', ['department'=>$dept]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Department  $Department
-     * @return \Illuminate\Http\Response
+     * @param Department $department
+     * @return void
      */
-    public function edit(Department $department)
+    public function edit($department=null)
     {
         //
+        $dept = Department::where(['id'=>$department])->first();
+        $faculties = Faculty::all();
+        return view('departments.edit', ['department'=>$dept, 'faculties'=>$faculties]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Department  $Department
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Department $department
+     * @return void
+     * @throws ValidationException
      */
-    public function update(Request $request, Department $department)
+    public function update(Request $request, Department $department, $id=null)
     {
         //
+        if($request->isMethod('post')){
+            $data = $request->all();
+            // Validate inputs
+            $this->validate($request, [
+               'name'=> 'required',
+                'faculty_id' => 'required'
+            ]);
+
+            //Update single department
+            $update = Department::where(['id'=>$id])->update([
+                'name' => $data['name'],
+                'description' => $data['description'],
+                'faculty_id' => $data['faculty_id']
+            ]);
+            if($update) {
+                return redirect('departments')->with('success', 'Department: ' . $data['name'] . ' Updated successfully');
+            }else{
+                return redirect()->back()->with('error', 'Unable to update '.$data['name'].' please check your server connection');
+            }
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Department  $Department
-     * @return \Illuminate\Http\Response
+     * @param Department $department
+     * @return void
      */
-    public function destroy(Department $department)
+    public function destroy($department=null)
     {
-        //
+        //delete a single department
+        $deldept = Department::where(['id'=>$department])->delete();
+        if($deldept){
+            return redirect()->back()->with('success', 'Department deleted successfully');
+        }else{
+            return redirect()->back()->with('error', 'Could not delete department, Make sure you are connected to the server');
+        }
     }
 }

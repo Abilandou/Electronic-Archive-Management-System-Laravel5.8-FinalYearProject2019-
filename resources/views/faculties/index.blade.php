@@ -61,6 +61,7 @@
           </table>
         </div>
       </div>
+        <p class="right">{{$faculties->links('vendor.pagination.materializecss')}}</p>
     </div>
   </div>
 </div>
@@ -76,14 +77,13 @@
         <div class="container">
             <form method="post" action="{{ url('faculties') }}" >
                 {{ csrf_field() }}
-                <div class="form-group">
-                    <label><b>Faculty Name(required)</b></label>
+                <div class="input-field">
                     <input type="text"
-                       placeholder="Enter Faculty Name"
                        name="name"
                        required
                        id="faculty_name"
                     >
+                    <label><b>Faculty Name(required)</b></label>
                 </div>
                 <div class="form-group">
                     <label><b>Faculty Description(optional)</b></label>
