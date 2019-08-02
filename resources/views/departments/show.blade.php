@@ -8,17 +8,20 @@
 			</div>
 			<div class="col m11  hide-on-med-and-down">
 				<div class="card-panel teal">
-					<h4>Name: {{ $department->name }}</h4>
+					<h4>Department Name: {{ $department->name }}</h4>
 					<div>
-						<h4>Description</h4>
+						<h4>Department Description</h4>
 						<p>
 							{{ $department->description }}
 						</p>
 					</div>
+					<div class="divider"></div>
 					<div>
-						<h4>Faculty</h4>
+						<h4>Faculty Name</h4>
 						<p>
 							{{ $department->faculty['name'] }}
+						<h6>Faculty Description</h6>
+						<p>{{ $department->faculty['description'] }}</p>
 						</p>
 					</div>
 				</div>
