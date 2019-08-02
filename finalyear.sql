@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 01, 2019 at 11:24 PM
+-- Generation Time: Aug 02, 2019 at 10:29 AM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 5.6.34
 
@@ -63,11 +63,10 @@ CREATE TABLE `departments` (
 --
 
 INSERT INTO `departments` (`id`, `name`, `description`, `faculty_id`, `created_at`, `updated_at`) VALUES
-(1, 'Computer Engineering', 'THis is the computer department', NULL, NULL, NULL),
-(2, 'Electrical', 'electrical', NULL, NULL, NULL),
-(3, 'Law and Pedagogic studies', 'This is the law department', 11, '2019-07-30 10:56:47', '2019-07-30 10:56:47'),
-(4, 'Family Room', 'This is just a try', 10, '2019-07-31 19:13:08', '2019-07-31 19:13:08'),
-(5, 'This is weird', 'Funny stuff', 11, '2019-07-31 19:23:00', '2019-07-31 19:23:00');
+(1, 'Computer Engineering', 'THis is the computer department', 2, NULL, '2019-08-02 06:32:11'),
+(4, 'Electrical Engineering', 'This is the department of electrical engineering', 2, '2019-07-31 19:13:08', '2019-08-02 06:37:31'),
+(5, 'Management Sciences/law', 'This is law department', 11, '2019-07-31 19:23:00', '2019-08-02 06:38:23'),
+(6, 'Department Of law and Brain', 'This is another powerful department to be precise', 11, '2019-08-02 04:31:58', '2019-08-02 04:31:58');
 
 -- --------------------------------------------------------
 
@@ -153,7 +152,7 @@ CREATE TABLE `faculties` (
 --
 
 INSERT INTO `faculties` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(2, 'Faculty Of Engineering And Technology', 'This is a dummy data concerning this faculties description. This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties descriptionThis is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description', NULL, '2019-07-08 16:38:48'),
+(2, 'Faculty Of Engineering And Technology', 'This is a dummy data concerning this faculties description. This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties descriptionThis is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description This is a dummy data concerning this faculties description', NULL, '2019-08-01 21:08:47'),
 (7, 'Faculty Of Arts And Culture', 'This way this are going am beginning to enjoy it because it is amazing This way this are going am beginning to enjoy it because it is amazing This way this are going am beginning to enjoy it because it is amazing This way this are going am beginning to enjoy it because it is amazing This way this are going am beginning to enjoy it because it is amazing This way this are going am beginning to enjoy it because it is amazing This way this are going am beginning to enjoy it because it is amazing', NULL, '2019-07-08 16:42:29'),
 (10, 'Faculty Of Education', 'This is the faculty of education', NULL, '2019-07-30 10:02:28'),
 (11, 'Faculty Of Social And Management Sciences', 'This is the faculty of social and management sciences.', NULL, '2019-07-30 10:03:32');
@@ -542,7 +541,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `documents`
