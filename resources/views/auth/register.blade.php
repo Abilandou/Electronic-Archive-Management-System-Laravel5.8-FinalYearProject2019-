@@ -6,7 +6,7 @@
         <div class="col-md-8">
         @include('snippets.messages')
             <div class="card hoverable">  
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header add_user_header">Add New User</div>
                 <div class="divider"></div>
 
                 <div class="card-body">

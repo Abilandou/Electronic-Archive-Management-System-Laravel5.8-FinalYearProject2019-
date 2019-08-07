@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Faculty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FacultyController extends Controller
 {
@@ -14,9 +15,17 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        //
-        $faculties = Faculty::orderby('id', 'ASC')->paginate(10);
-        return view('faculties.index', ['faculties' =>$faculties]);
+        //Show faculties only for system maintainers
+
+        $auth_user_status = Auth::user()->maintainer;
+        if($auth_user_status == '1') {
+//            $faculties = Faculty::orderby('id', 'ASC')->paginate(10);
+            $faculties = Faculty::orderby('id', 'ASC')->get();
+      //        return response()->json($faculties);
+            return view('faculties.index', ['faculties' => $faculties]);
+        }else{
+            abort(404);
+        }
     }
 
     /**
@@ -69,6 +78,10 @@ class FacultyController extends Controller
     {
         //
         $fac = Faculty::where(['id'=>$faculty])->first();
+        if(!$fac){
+            abort(404);
+        }
+//        return response()->json($fac);
         return view('faculties.show', ['faculty'=>$fac]);
 
 
@@ -85,6 +98,10 @@ class FacultyController extends Controller
     {
         //
         $fac = Faculty::where(['id'=>$faculty])->first();
+        if(!$fac){
+            abort(404);
+        }
+//        return response()->json($fac);
         return view('faculties.edit', ['faculty' => $fac]);
     }
 
@@ -110,6 +127,7 @@ class FacultyController extends Controller
                         'name' => $data['name'],
                         'description' => $data['description'],
             ]);
+//            return response()->json($fac);
             if($fac){
                 return redirect('/faculties')->with('success', 'Faculty '.$data['name'].' Updated successfully');
             }else{
@@ -130,6 +148,8 @@ class FacultyController extends Controller
         $faculty = Faculty::where(['id'=>$id])->delete();
         if($faculty){
             return redirect('/faculties')->with('success', 'Faculty deleted successfully');
+        }else if(!$faculty) {
+            abort(404);
         }else{
             return redirect()->back()->with('error', 'Sorry could not delete faculty, please make sure you are connected to the server');
         }

@@ -13,14 +13,14 @@
 
                     <h3 class="flow-text"><i class="material-icons">house</i>Departments
                         <a  href="#" style="margin-left:900px;">
-                            <button id="trigger" title="Add New Department" class="tooltipped btn" data-position="top"  data-delay="50" data-tooltip="Add New Department"><i class="material-icons" >add</i>Add New</button>
+                            <button title="Add New Department" class="tooltipped btn" data-toggle="modal" data-target="#addDeptModal" ><i class="material-icons" >add</i>Add New</button>
                         </a>
                     </h3>
                 </div>
                 <div class="divider"></div>
                 <div class="card z-depth-2">
                     <div class="card-content">
-                        <table class="bordered striped centered highlight" id="myDataTable">
+                        <table class="bordered striped centered highlight responsive-table table-bordered table" id="myDataTable">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -38,23 +38,39 @@
                                         <td>{{ $department->id }}</td>
                                         <td>{{ $department->name }}</td>
                                         <td>
-                                            {{ $department->faculty_name['name'] }}
+                                            {{ $department->faculty['name'] }}
                                         </td>
                                         <td>{{ str_limit( $department->description, 100) }}</td>
                                         <td>
-                                            <a href="departments/{{$department->id}}" id="view" title="View Details" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="View Details">
+                                             <a href="department{{ $department->id }}" title="View Details" class="tooltipped" data-target="#department{{ $department->id }}" data-toggle="modal"  data-delay="50" data-tooltip="View Details">
                                                 <i class="material-icons">visibility</i>
                                             </a>
                                             <a href="departments/{{ $department->id }}/edit" title="Edit Department" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Edit Department" >
                                                 <i class="material-icons">mode_edit</i>
                                             </a>
                                             <a href="{{ url('/delete-department/'.$department->id) }}" id="delnow" title="Delete This Department" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Delete This Department" >
-                                                <i class="material-icons">delete</i>
+                                                <i class="material-icons red-text">delete</i>
                                             </a>
 
                                         </td>
                                     </tr>
-                                    {{--@endif--}}
+                                    <div class="modal indigo" id="department{{ $department->id }}">
+                                      <header class="modal-header white-text align-center indigo">
+                                          <h4>Details for: <i>{{ $department->name }}</i></h4><br/>
+                                      </header>
+                                      <div class=" container-fluid  modal-content">
+
+                                          <div class="container">
+                                              <b>Name</b>: <h5>{{ $department->name }}</h5>
+                                              <br />
+
+                                              <b>Description</b>: <p class="text-justify">{{ $department->description }}</p>
+                                              <br />
+
+                                              <b class="text-underline">Faculty Name</b>: <h6>{{ $department->faculty_name['name'] }}</h6>
+                                          </div>
+                                      </div>
+                                    </div>
                                 @endforeach
                             @else
                                 <tr>
@@ -72,7 +88,7 @@
 
     <!-- Modal For Adding Department -->
 
-    <div class="modal teal">
+    <div class="modal teal" id="addDeptModal">
         <header class="modal-header white-text align-center teal">
             <h4 class="modal-header-text">Add Department</h4><br/>
         </header>

@@ -2,12 +2,11 @@
 <nav class="navbar navbar-expand-md indigo darken-4  shadow-sm">
     <div class="container">
         <a href="{{ url('/dashboard') }}" class="brand-logo center">
-          <i class="material-icons">school</i>Final Year Project.
+          <i class="material-icons label-icon">school</i>Final Year Project.
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
             <!-- Right Side Of Navbar -->
@@ -24,6 +23,7 @@
                         </li>
                     @endif
                 @else
+
                     <li class="nav-item mt-2 mx-3">Trash</li>
                     <li class="nav-item mt-2 mx-3">Requests</li>
                     <li class="nav-item dropdown">
@@ -48,11 +48,7 @@
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
-                   
-
                         </div>
-
-                        
                     </li>
                 @endguest
             </ul>

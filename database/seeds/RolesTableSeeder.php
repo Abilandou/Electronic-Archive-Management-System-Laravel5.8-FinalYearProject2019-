@@ -30,7 +30,7 @@ class RolesTableSeeder extends Seeder
         // $hod  = Role::create(['name' => 'HOD']);
         // $sectary = Role::create(['name' => 'secratary']);
         // $prof  = Role::create(['name' => 'PROF']);
-        // $user =  Role::create(['name' => 'User']);
+        // $users =  Role::create(['name' => 'User']);
 
     }
 }

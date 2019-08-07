@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <!-- Admin Dashboard -->
     <div class="container">
         <div class="row">

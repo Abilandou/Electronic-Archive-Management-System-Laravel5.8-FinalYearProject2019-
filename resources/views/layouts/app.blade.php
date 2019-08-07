@@ -4,41 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {!! MaterializeCSS::include_full() !!}
-    <link rel="stylesheet" charset="utf-8" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" charset="utf-8" href="http://yourdomain.com/materialize-css/css/materialize.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="http://yourdomain.com/materialize-css/js/materialize.min.js"></script>
-    <!-- CSRF Token -->
+  <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'EDMS') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" />
-
-    <link rel="stylesheet" href="{{ asset('iconfont/material-icons.css') }}">
-    <!-- Materialize css -->
-    <link rel="stylesheet" href="{{ asset('materialize-css/css/materialize.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/materialize.min.css') }}">
-     <link rel="stylesheet" href="{{ asset('css/materialize.css') }}">
      <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-    <!-- datatables -->
-    <link rel="stylesheet" href="{{ asset('DataTables/datatables.css') }}">
-    <link rel="stylesheet" href="{{ asset('DataTables/table1.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('DataTables/table2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('DataTables/DataTables-1.10.15/css/jquery.dataTables.css') }}">
-    <!-- favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/storage/images/favicon.ico">
-
-
-
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -48,8 +22,6 @@
     @include('snippets.spinner')
     <main>
         <div id="app">
-
-
           @include('snippets.navbar')
 
              @yield('content')
@@ -79,15 +51,9 @@
             @include('snippets.footer')
             @include('snippets.scripts')
         </div>
-    <script src="{{ asset('js/materialize.min.js') }}"></script>
-    <script src="{{ asset('js/materialize.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <script src="{{ asset('js/context-menu.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-    <script src="{{ asset('DataTables/datatables.js') }}"></script>
-    <script src="{{ asset('DataTables/DataTables-1.10.15/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('DataTables/datatables.min.js') }}" charset="utf-8"></script>
 
 </body>
 </html>

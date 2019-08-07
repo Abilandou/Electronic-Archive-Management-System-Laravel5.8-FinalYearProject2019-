@@ -13,6 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/users', function (Request $request) {
     return $request->user();
 });
+
+//Route::group(['middleware' => ['auth']], function(){
+    Route::resource('faculties', 'FacultyController');
+    Route::resource('departments', 'DepartmentController');
+    Route::post('/edit-faculty/{id}', 'FacultyController@update');
+    Route::resource('categories', 'CategoryController');
+    Route::resource('roles', 'RoleController');
+// });

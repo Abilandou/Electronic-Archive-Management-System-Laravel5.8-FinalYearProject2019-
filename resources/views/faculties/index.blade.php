@@ -13,14 +13,14 @@
 
         <h3 class="flow-text"><i class="material-icons">house</i>Faculties
           <a  href="#" style="margin-left:900px;">
-             <button id="trigger" title="Add New Faculty" class="tooltipped btn" data-position="top"  data-delay="50" data-tooltip="Add New Faculty"><i class="material-icons" >add</i>Add New</button>
+             <button title="Add New Faculty" class="tooltipped btn" data-toggle="modal" data-target="#addFacModal"><i class="material-icons" >add</i>Add New</button>
          </a>
         </h3>
       </div>
       <div class="divider"></div>
       <div class="card z-depth-2">
         <div class="card-content">
-          <table class="bordered striped centered highlight" id="myDataTable">
+          <table class=" mdl-data-table centered highlight table table-bordered responsive-table" id="myDataTable">
             <thead>
               <tr>
                   <th>#</th>
@@ -36,21 +36,34 @@
                   <tr class="@if($faculty->id % 2 == 0) @else indigo lighten-4 @endif">
                     <td>{{ $faculty->id }}</td>
                     <td>{{ $faculty->name }}</td>
-                    <td>{{ str_limit( $faculty->description, 100) }}</td>
+                    <td>{{ Str::limit( $faculty->description, 100) }}</td>
                     <td>
-                      <a href="faculties/{{$faculty->id}}" title="View Details" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="View Details">
+                      <a href="faculty{{ $faculty->id }}" title="View Details" class="tooltipped" data-target="#faculty{{ $faculty->id }}" data-toggle="modal"  data-delay="50" data-tooltip="View Details">
                         <i class="material-icons">visibility</i>
                       </a>
                       <a href="faculties/{{ $faculty->id }}/edit" title="Edit Faculty" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Edit Faculty" >
                         <i class="material-icons">mode_edit</i>
                       </a>
                       <a href="{{ url('/delete-faculty/'.$faculty->id) }}" id="delnow" title="Delete This Faculty" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Delete This Faculty" >
-                        <i class="material-icons">delete</i>
+                        <i class="material-icons red-text">delete</i>
                       </a>
 
                     </td>
                   </tr>
-                  {{--@endif--}}
+                   <div class="modal indigo" id="faculty{{ $faculty->id }}">
+                          <header class="modal-header white-text align-center indigo">
+                              <h4>Details for: <i>{{ $faculty->name }}</i></h4><br/>
+                          </header>
+                          <div class=" container-fluid  modal-content">
+
+                              <div class="container">
+                                  <b>Name</b>: <h5>{{ $faculty->name }}</h5>
+                                  <br />
+
+                                  <b>Description</b>: <p class="text-justify">{{ $faculty->description }}</p>
+                              </div>
+                          </div>
+                      </div>
                 @endforeach
               @else
                 <tr>
@@ -61,14 +74,14 @@
           </table>
         </div>
       </div>
-        <p class="right">{{$faculties->links('vendor.pagination.materializecss')}}</p>
+{{--        <p class="right">{{$faculties->links('vendor.pagination.materializecss')}}</p>--}}
     </div>
   </div>
 </div>
 
 <!-- Modal For Adding Faculty -->
 
-<div class="modal teal">
+<div class="modal teal" id="addFacModal">
     <header class="modal-header white-text align-center teal">
         <h4 class="modal-header-text">Add Faculty</h4><br/>
     </header>

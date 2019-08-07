@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card hoverable">
-                <div class="card-header" id="admin_header_login">User Login</div>
+                <div class="card-header admin_header">User Login</div>
                 <div class="divider"></div>
 
                 <div class="card-body">

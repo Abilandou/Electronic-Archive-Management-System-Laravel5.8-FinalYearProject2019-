@@ -27,19 +27,15 @@
             <tbody>
               @if(count($users) > 0)
                 @foreach($users as $user)
-                  {{--@if(!$user->hasRole('Root')) --}}
+                  {{--@if(!$users->hasRole('Root')) --}}
                   <tr>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->userBio }}</td>
                     <td>{{ $user->email }}</td>
-
-
                     <td>
-
                       <a href="#" class="left"><i class="material-icons">visibility</i></a>
                       <a href="/users/{{ $user->id }}/edit" class="center"><i class="material-icons">mode_edit</i></a>
                       <a href="" class="right data-delete" data-form="users-{{ $user->id }}"><i class="material-icons">delete</i></a>
-
                     </td>
                   </tr>
                   {{--@endif--}}
@@ -84,12 +80,12 @@
           <select name="department_id" id="department_id">
             <option value="" disabled selected>Choose Department</option>
             {{-- @if(count($depts) > 0)
-              @if(Auth::user()->hasRole('Root'))
+              @if(Auth::users()->hasRole('Root'))
                 @foreach($depts as $dept)
                 <option value="{{ $dept->id }}">{{ $dept->dptName }}</option>
                 @endforeach
-              @elseif(Auth::user()->hasRole('Admin'))
-                <option value="{{ Auth::user()->department_id }}">{{ Auth::user()->department['dptName'] }}</option>
+              @elseif(Auth::users()->hasRole('Admin'))
+                <option value="{{ Auth::users()->department_id }}">{{ Auth::users()->department['dptName'] }}</option>
               @endif
             @endif --}}
           </select>

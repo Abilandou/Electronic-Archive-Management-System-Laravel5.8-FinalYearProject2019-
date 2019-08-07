@@ -19,9 +19,8 @@ class DepartmentController extends Controller
     public function index()
     {
         //
-
-
         $departments = Department::orderby('id', 'ASC')->paginate(10);
+//        return response()->json($departments);
 
         // Return faculty name from departments table based on foreign key constraints.(foreign key=faculty_id )
         foreach ($departments as $key => $val){
@@ -81,6 +80,10 @@ class DepartmentController extends Controller
     {
         //
         $dept = Department::where(['id'=>$department])->first();
+        if(!$dept){
+            abort(404);
+        }
+//        return response()->json($dept);
         return view('departments.show', ['department'=>$dept]);
     }
 
@@ -94,6 +97,10 @@ class DepartmentController extends Controller
     {
         //
         $dept = Department::where(['id'=>$department])->first();
+        if(!$dept){
+            abort(404);
+        }
+
         $faculties = Faculty::all();
         return view('departments.edit', ['department'=>$dept, 'faculties'=>$faculties]);
     }
@@ -143,6 +150,8 @@ class DepartmentController extends Controller
         $deldept = Department::where(['id'=>$department])->delete();
         if($deldept){
             return redirect()->back()->with('success', 'Department deleted successfully');
+        }else if(!$deldept){
+            abort(404);
         }else{
             return redirect()->back()->with('error', 'Could not delete department, Make sure you are connected to the server');
         }

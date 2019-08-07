@@ -3,6 +3,7 @@
 @section('content')
     <div class="row">
         <div class="section">
+
             <div class="col m1 hide-on-med-and-down">
                 @include('snippets.sidebar')
             </div>
@@ -11,15 +12,15 @@
                 <div class="row">
 
                     <h3 class="flow-text"><i class="material-icons">category</i>Categories
-                        <a  href="#" style="margin-left:1000px;">
-                            <button id="trigger" title="Add New Category" class="tooltipped btn" data-position="top"  data-delay="50" data-tooltip="Add New Faculty"><i class="material-icons" >add</i>Add New</button>
+                        <a  href="#" style="margin-left:900px;">
+                            <button id="trigger" title="Add New Category" class="tooltipped btn" data-position="top"  data-delay="50" data-tooltip="Add New Category"><i class="material-icons" >add</i>Add New</button>
                         </a>
                     </h3>
                 </div>
                 <div class="divider"></div>
                 <div class="card z-depth-2">
                     <div class="card-content">
-                        <table class=" striped bordered centered highlight" id="myDataTable">
+                        <table class="bordered striped centered highlight" id="myDataTable">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -31,15 +32,15 @@
                             @if(count($categories) > 0)
                                 @foreach($categories as $category)
                                     {{--@if(!$category->hasRole('Root')) --}}
-                                    <tr class="@if($category->id % 2 == 0)  @else indigo lighten-4 @endif" >
+                                    <tr class="@if($category->id % 2 == 0) @else indigo lighten-4 @endif">
                                         <td>{{ $category->id }}</td>
                                         <td>{{ $category->name }}</td>
                                         <td>
-                                            <a href="categories/{{ $category->id }}/edit" title="Edit Category" class="tooltipped" data-position="right" id="catedit"  data-delay="50" data-tooltip="Edit Category" >
+                                            <a href="categories/{{ $category->id }}/edit" title="Edit Category" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Edit Category" >
                                                 <i class="material-icons">mode_edit</i>
                                             </a>
                                             <a href="{{ url('/delete-category/'.$category->id) }}" id="delnow" title="Delete This Category" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Delete This Category" >
-                                                <i class="material-icons">delete</i>
+                                                <i class="material-icons red-text">delete</i>
                                             </a>
 
                                         </td>
@@ -55,12 +56,12 @@
                         </table>
                     </div>
                 </div>
-                <p class="right">{{$categories->links('vendor.pagination.materializecss')}}</p>
+                {{-- <!-- <p class="right">{{$categories->links('vendor.pagination.materializecss')}}</p> --> --}}
             </div>
         </div>
     </div>
 
-    <!-- Modal For Adding Faculty -->
+    <!-- Modal For Adding Category -->
 
     <div class="modal teal">
         <header class="modal-header white-text align-center teal">
@@ -71,14 +72,13 @@
             <div class="container">
                 <form method="post" action="{{ url('categories') }}" >
                     {{ csrf_field() }}
-                    <div class="form-group">
-                        <label><b>Category Name(required)</b></label>
+                    <div class="input-field">
                         <input type="text"
-                               placeholder="Enter Faculty Name"
                                name="name"
                                required
                                id="category_name"
                         >
+                        <label><b>Category Name(required)</b></label>
                     </div>
                     <div class="form-group ">
                         <button type="submit"
@@ -90,5 +90,6 @@
             </div>
         </div>
     </div>
+
 
 @endsection

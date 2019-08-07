@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Faculty;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -52,11 +53,12 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'faculty_id' => ['required', 'unique:faculties']
         ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Create a new users instance after a valid registration.
      *
      * @param  array  $data
      * @return \App\User

@@ -24,7 +24,12 @@ main {
 .textarea {
     height: 130px;
 }
-#admin_header_login{
+.admin_header{
+    text-align: center;
+    font-size:24px;
+    color: teal;
+}
+.add_user_header{
     text-align: center;
     font-size:24px;
     color: teal;
@@ -40,5 +45,8 @@ main {
 .required-field{
     font-size:16px;
     margin-left: 40%;
-
 }
+.image404{
+    margin: 400px;
+}
+

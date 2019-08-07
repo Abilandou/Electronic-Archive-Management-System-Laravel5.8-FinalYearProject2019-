@@ -4,20 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
 
         //return all categories
 
-        $categories = Category:: orderby('id', 'DESC')->get();
+        $categories = Category::orderby('id', 'ASC')->paginate(10);
+//        return response()->json($categories);
         return view('categories.index', ['categories'=>$categories]);
 //        return view('categories.index')->with(compact('categories', $categories));
 
@@ -26,20 +29,21 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
         //
-        $categories = Category::orderby('id', 'ASC')->paginate(10);
+        $categories = Category::all();
         return view('categories.index', ['categories'=>$categories]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
+     * @throws ValidationException
      */
 
     public function store(Request $request)
@@ -68,8 +72,8 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param \App\Category $category
+     * @return void
      */
     public function show(Category $category)
     {
@@ -80,21 +84,26 @@ class CategoryController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Category $category, $id=null)
     {
         //
         $category = Category::where(['id'=>$id])->first();
-        return view('categories.index', ['category'=>$category]);
+        $categories = Category::all();
+//        if(!$category){
+//            abort(404);
+//        }
+        return view('categories.edit', ['category'=>$category, 'categories'=>$categories]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param \App\Category $category
+     * @return Response
+     * @throws ValidationException
      */
     public function update(Request $request, Category $category)
     {
@@ -121,7 +130,7 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Category $category, $id=null)
     {
@@ -130,6 +139,8 @@ class CategoryController extends Controller
 
         if($cate){
             return redirect()->back()->with('success', 'Category deleted successfully');
+        }else if(!$cate) {
+            abort(404);
         }else{
             return redirect()->back()->with('error', 'Unable to delete category please check your server connection');
         }
