@@ -72,7 +72,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Category $category
+     * @param Category $category
      * @return void
      */
     public function show(Category $category)
@@ -83,39 +83,40 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param Category $category
+     * @param null $id
      * @return Response
      */
-    public function edit(Category $category, $id=null)
+    public function edit($category=null)
     {
         //
-        $category = Category::where(['id'=>$id])->first();
-        $categories = Category::all();
-//        if(!$category){
-//            abort(404);
-//        }
-        return view('categories.edit', ['category'=>$category, 'categories'=>$categories]);
+        $cat = Category::where(['id'=>$category])->first();
+//        $categories = Category::all();
+        if(!$category){
+            abort(404);
+        }
+        return view('categories.edit', ['category'=>$cat]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param \App\Category $category
+     * @param Category $category
      * @return Response
      * @throws ValidationException
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category, $id=null)
     {
         //
         if($request->isMethod('post')){
             $data = $request->all();
             $this->validate($request, [
-               'name' => 'string|required|unique:categories'
+               'name' => 'required'
             ]);
 
             //Update a single category
-            $cat = Category::where('id',$category)->update([
+            $cat = Category::where(['id'=>$id])->update([
                 'name'=>$data['name']
             ]);
             if ($cat){
@@ -129,7 +130,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Category  $category
+     * @param Category $category
      * @return Response
      */
     public function destroy(Category $category, $id=null)

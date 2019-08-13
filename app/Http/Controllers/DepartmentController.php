@@ -23,10 +23,10 @@ class DepartmentController extends Controller
 //        return response()->json($departments);
 
         // Return faculty name from departments table based on foreign key constraints.(foreign key=faculty_id )
-        foreach ($departments as $key => $val){
-            $faculty_name = Faculty::where(['id'=>$val->faculty_id])->first();
-            $departments[$key]->faculty_name = $faculty_name;
-        }
+//        foreach ($departments as $key => $val){
+//            $faculty_name = Faculty::where(['id'=>$val->faculty_id])->first();
+//            $departments[$key]->faculty_name = $faculty_name;
+//        }
         $faculties = DB::table('faculties')->get();
 
         $faculty =  Department::with('faculty')->get();

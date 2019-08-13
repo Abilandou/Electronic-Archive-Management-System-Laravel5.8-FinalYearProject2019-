@@ -1,4 +1,11 @@
 $(document).ready(function () {
+  $('.edit-submit').click(function () {
+
+    $('.editForm').submit()
+  })
+})
+
+$(document).ready(function () {
   // Datatables
   $('#myDataTable').DataTable ( {
     columnDefs: [

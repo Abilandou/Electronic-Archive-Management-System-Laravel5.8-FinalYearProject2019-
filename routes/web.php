@@ -23,7 +23,10 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/profile', 'UserController@profile');
 	Route::resource('/users', 'UserController');
 	Route::post('/add-fac-user', 'UserController@addFacultyUsers');
+	Route::match(['get', 'post'],'/add-maintainer', 'UserController@addMaintainer');
     Route::get('/delete-user/{id}', 'UserController@destroy');
+    Route::match(['post', 'get'],'/edit-fac-user/{id}', 'UserController@editFacultyUser');
+    Route::post('/edit-user/{id}', 'UserController@update');
 
     // Category Routes
     Route::resource('/categories', 'CategoryController');
@@ -42,7 +45,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::post('/edit-department/{id}', 'DepartmentController@update');
 
 
-    //Roles Route
+    //Roles/Permissions Routes
     Route::resource('roles', 'RoleController');
     Route::resource('permissions', 'PermissionController');
     Route::get('/delete-role/{id}', 'RoleController@destroy');
@@ -50,6 +53,9 @@ Route::group(['middleware' => ['auth']], function(){
     Route::post('/edit-role/{id}', 'RoleController@update');
     Route::post('/edit-permission/{id}', 'PermissionController@update');
 
+    //Logs controller
+    Route::get('logs', 'LogController@log');
+    Route::get('logDel', 'LogController@logdel');
 
 
 });

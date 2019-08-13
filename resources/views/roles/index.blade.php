@@ -22,7 +22,6 @@
                   <tr>
                     <th>Role</th>
                     <th>Permissions</th>
-                    <th></th>
                   </tr>
                   </thead>
 
@@ -31,7 +30,7 @@
                     @foreach($roles as $role)
                       <tr>
                         <td>{{ $role->name }}</td>
-                        
+{{--                          <td>{{ $role->}}</td>--}}
                          <td></td>
                          
                        </tr>
@@ -46,8 +45,10 @@
               <div class="card col m5 s12 z-depth-2 indigo lighten-1">
                 <div class="card-content">
                   <h5 class="white-text">Notice</h5>
-                  <p class="grey-text text-lighten-2">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo velit alias, veniam mollitia tenetur molestiae amet soluta distinctio laboriosam nobis. Impedit ab perspiciatis, debitis, modi ipsam obcaecati accusamus porro voluptate.
+                  <p class="grey-text text-lighten-2 text-justify">
+                      Roles, Have permissions, a role has more than one permission. A permission may belong to more than
+                      One role at the same time. A user has roles which he uses based on the permissions given to the
+                      role. Access rights to documents is based on user role(with permissions attached).
                   </p>
                 </div>
               </div>
@@ -81,7 +82,7 @@
                                 <i class="material-icons red-text">delete</i>
                               </a>
 
-                    </td>
+                            </td>
                           </tr>
                         @endforeach
                       @else
@@ -120,13 +121,13 @@
                         <td>{{ $permission->id }}</td>
                         <td>{{ $permission->name }}</td>
                         <td>
-                        <a href="#" data-target="#permEdit{{ $permission->id }}" data-toggle="modal" title="Edit permission" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Edit permission" >
+                        <a href="permissions/{{ $permission->id }}/edit"  title="Edit permission" class="tooltipped"   >
                           <i class="material-icons">mode_edit</i>
                         </a>
-                        <a href="{{ url('/delete-permission/'.$permission->id) }}" id="delnow" title="Delete This permission" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Delete This permission" >
+                        <a href="{{ url('/delete-permission/'.$permission->id) }}"
+                           id="delnow" title="Delete This permission" class="tooltipped"  >
                           <i class="material-icons red-text">delete</i>
                         </a>
-
                     </td>
                       </tr>
                      
@@ -165,7 +166,7 @@
                     >
                     <label><b>Role Name(required)</b></label>
                 </div>
-                <h5>Role's Permission(s)</h5>
+                <h5>Assign Permission(s) To This Role</h5>
                 <div class="form-check">
                     
                     @foreach($permissions as $perm)
@@ -196,7 +197,7 @@
     <header class="modal-header white-text align-center indigo">
         <h4 class="modal-header-text">Add New Permission</h4><br/>
     </header>
-    <div class=" container-fluid  modal-content">
+    <div class="container-fluid  modal-content">
 
         <div class="container">
             <form method="post" action="{{ url('permissions') }}" >
@@ -210,6 +211,18 @@
                     <label><b>Permission Name(required)</b></label>
                 </div>
                 <input type="hidden" name="guard_name" value="web">
+                <h5>Assign Role(s) To This Permission</h5>
+                <div class="form-check">
+
+                    @foreach($roles as $role)
+                        <label>
+                            <input class="browser-default" type="checkbox" name="roles[]" value="{{ $role->id }}">
+                            <span><p>{{ ucfirst($role->name) }}</p></span>
+                        </label>
+                    @endforeach
+
+
+                </div>
                 <div class="form-group ">
                     <button type="submit"
                             class=" text-lighten-4 float-right btn mb-3 ">
@@ -221,7 +234,5 @@
     </div>
 </div>
 
-
- 
 
 @endsection

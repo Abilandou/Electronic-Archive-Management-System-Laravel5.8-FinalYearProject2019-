@@ -32,7 +32,7 @@
                             </thead>
                             <tbody>
                             @if(count($departments) > 0)
-                                @foreach($departments as $sec => $department)
+                                @foreach($departments as $department)
                                     {{--@if(!$department->hasRole('Root')) --}}
                                     <tr class="@if($department->id % 2 == 0) @else indigo lighten-4 @endif">
                                         <td>{{ $department->id }}</td>
@@ -40,7 +40,7 @@
                                         <td>
                                             {{ $department->faculty['name'] }}
                                         </td>
-                                        <td>{{ str_limit( $department->description, 100) }}</td>
+                                        <td>{{ Str::limit( $department->description, 100) }}</td>
                                         <td>
                                              <a href="department{{ $department->id }}" title="View Details" class="tooltipped" data-target="#department{{ $department->id }}" data-toggle="modal"  data-delay="50" data-tooltip="View Details">
                                                 <i class="material-icons">visibility</i>
@@ -67,7 +67,14 @@
                                               <b>Description</b>: <p class="text-justify">{{ $department->description }}</p>
                                               <br />
 
-                                              <b class="text-underline">Faculty Name</b>: <h6>{{ $department->faculty_name['name'] }}</h6>
+                                              <b class="text-underline">Faculty Name</b>: <h6>{{ $department->faculty['name'] }}</h6><br />
+                                              <b>Department Members</b>
+                                              @if(count($department->users->pluck('name')) > 0)
+                                                  <p class="text-justify">{{ $department->users->pluck('name') }}</p>
+                                              @else
+                                                  <p class="text-justify teal-text">No Member added yet</p>
+                                              @endif
+
                                           </div>
                                       </div>
                                     </div>

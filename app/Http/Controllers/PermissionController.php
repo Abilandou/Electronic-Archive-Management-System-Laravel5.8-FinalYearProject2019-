@@ -52,12 +52,24 @@ class PermissionController extends Controller
                 'name'=>'required'
             ]);
 
-            $addPerm = DB::table('permissions')->insert([
-                'name'=>$data['name'],
-                'guard_name'=>$data['guard_name']
-            ]);
+            $name = $request['name'];
+            $permission = new Permission();
+            $permission->name = $name;
 
-            if($addPerm){
+            //Get the roles selected
+            $roles = $request['roles'];
+            //save the permission
+            $permission->save();
+
+            //Check if role is not empty and assign it to the permission
+            if(!empty($request['roles'])){
+                foreach ($roles as $role){
+                    $role_id = Role::where(['id'=>$role])->first();
+                    $permission = Permission::where(['name'=>$name])->first();
+                    $role_id->givePermissionTo($permission);
+                }
+            }
+            if($permission){
                 return redirect('/roles')->with('success', 'Permission: '.$data['name'].' Added successfully');
 
             }else{
@@ -83,11 +95,15 @@ class PermissionController extends Controller
      * @param  \App\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function edit(Permission $permission, $id=null)
+    public function edit($permission=null)
     {
         //
-        // $single_perm = DB::table('permissions')->where(['id'=>$id])->first();
-        // return view('roles.index', ['single_perm'=>$single_perm]);
+         $single_perm = DB::table('permissions')->where(['id'=>$permission])->first();
+//         $single_perm = json_decode(json_encode($single_perm));
+//         echo "<pre>"; print_r($single_perm); die();
+         $roles = Role::all();
+
+         return view('permissions.edit', ['single_perm'=>$single_perm, 'roles'=>$roles]);
     }
 
     /**
@@ -97,21 +113,44 @@ class PermissionController extends Controller
      * @param  \App\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Permission $permission)
+    public function update(Request $request, Permission $permission, $id=null)
     {
         //
         if($request->isMethod('post')){
             $data = $request->all();
+//            $data = json_decode(json_encode($data));
+//            echo "<pre>"; print_r($data); die();
 
             //Validate the name
             $this->validate($request, [
-                'name' => 'required'
+                'name' => 'required',
+                'roles' => 'required'
             ]);
+//            $input = $request->except(['roles']);
+//            $roles = $request['roles'];
+//
+//            //save permission name
+//            $permission->update($input);
+//
+//            //all roles
+//            $role_all = Role::all();
+//            foreach ($role_all as $rol){
+//                $permission->removeRole($rol);
+//            }
+//
+//            //Looping through selected roless
+//            foreach ($roles as $role) {
+//                //get corresponding form permission in the db
+//                $rol = Role::where('id', $role)->firstOrFail();
+//                $permission->givePermissionTo($rol);
+//            }
+//
+//            return redirect('/roles')->with('success', 'Permission updated successfully');
 
-            $updatePerm = DB::table('permissions')->update([
+            $update_perm = DB::table('permissions')->where(['id'=>$id])->update([
                 'name' => $data['name']
             ]);
-            if($updatePerm){
+            if($update_perm){
                 return redirect('/roles')->with('success', 'Permission '.$data['name'].' Updated successfully');
             }else{
                 return redirect('/roles')->with('error', 'Failed to update this permission, please make sure you are connected to the server');
@@ -128,9 +167,9 @@ class PermissionController extends Controller
     public function destroy(Permission $permission, $id=null)
     {
         //
-        $delperm = DB::table('permissions')->where(['id'=>$id])->delete();
-        if($delperm){
-            return redirect('/roles')->with('sucess', 'Permission deleted successfully');
+        $del_perm = DB::table('permissions')->where(['id'=>$id])->delete();
+        if($del_perm){
+            return redirect('/roles')->with('success', 'Permission deleted successfully');
         }else{
             return redirect('/roles')->with('error', 'Failed to delete permission make sure you are connected to the server');
         }

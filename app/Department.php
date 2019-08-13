@@ -14,15 +14,15 @@ class Department extends Model
 
     public function documents()
     {
-    	return $this->hasMany('App\Document');
+    	return $this->hasMany(Document::class);
     }
     public function users()
     {
-    	return $this->hasMany('App\User');
+    	return $this->hasMany(User::class);
     }
 
     public function faculty()
     {
-    	return $this->belongsTo(Faculty::class, 'faculty_id');
+    	return $this->belongsTo(Faculty::class);
     }
 }

@@ -32,7 +32,7 @@
             <tbody>
               @if(count($faculties) > 0)
                 @foreach($faculties as $faculty)
-                  {{--@if(!$faculty->hasRole('Root')) --}}
+{{--                  @if(!$faculty->hasRole('Root'))--}}
                   <tr class="@if($faculty->id % 2 == 0) @else indigo lighten-4 @endif">
                     <td>{{ $faculty->id }}</td>
                     <td>{{ $faculty->name }}</td>
@@ -50,6 +50,7 @@
 
                     </td>
                   </tr>
+{{--                  @endif--}}
                    <div class="modal indigo" id="faculty{{ $faculty->id }}">
                           <header class="modal-header white-text align-center indigo">
                               <h4>Details for: <i>{{ $faculty->name }}</i></h4><br/>
@@ -60,7 +61,20 @@
                                   <b>Name</b>: <h5>{{ $faculty->name }}</h5>
                                   <br />
 
-                                  <b>Description</b>: <p class="text-justify">{{ $faculty->description }}</p>
+                                  <b>Description</b>: <p class="text-justify">{{ $faculty->description }}</p><br/>
+                                  <b>Departments</b>:
+                                  @if(count($faculty->departments->pluck('name')) > 0)
+                                      <p class="text-justify">{{ $faculty->departments->pluck('name') }}</p>
+                                  @else
+                                      <p class="text-justify teal-text">No departments added yet</p>
+                                  @endif
+                                    <br/>
+                                  <b>Faculty Member(s)</b>:
+                                  @if(count($faculty->users->pluck('name')) > 0)
+                                      <p class="text-justify">{{ $faculty->users->pluck('name') }}</p>
+                                  @else
+                                      <p class="text-justify teal-text">No Member added yet</p>
+                                  @endif
                               </div>
                           </div>
                       </div>

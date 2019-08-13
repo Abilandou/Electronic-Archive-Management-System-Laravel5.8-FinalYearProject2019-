@@ -13,6 +13,22 @@ class FacultyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public  function __construct()
+
+    {
+
+        // $this->middleware('permission:post-list');
+//        $this->middleware('role:vice', ['only' => ['index']]);
+
+//        $this->middleware('permission:create', ['only' => ['create','store']]);
+//
+//        $this->middleware('permission:edit', ['only' => ['edit','update']]);
+//
+//        $this->middleware('permission:delete', ['only' => ['destroy']]);
+
+    }
+
+
     public function index()
     {
         //Show faculties only for system maintainers

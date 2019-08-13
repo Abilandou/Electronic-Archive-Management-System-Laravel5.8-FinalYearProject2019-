@@ -11,12 +11,15 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use PhpParser\Node\Scalar\String_;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 
 class UserController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -151,12 +154,17 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param int $user
      * @return void
      */
-    public function edit($id)
+    public function edit($user=null)
     {
         //
+        $departments = DB::table('departments')->get(); // Needed to edit faculty members
+        $roles = Role::all();
+        $edit_user = User::where(['id'=>$user])->first(); // return current user we want to edit
+        $faculties = DB::table('faculties')->get(); // Needed to edit faculty administrators
+        return view('users.edit',['departments'=>$departments, 'user'=>$edit_user, 'faculties'=>$faculties, 'roles'=>$roles]);
     }
 
     /**
@@ -165,10 +173,35 @@ class UserController extends Controller
      * @param Request $request
      * @param int $id
      * @return void
+     * @throws ValidationException
      */
     public function update(Request $request, $id)
     {
         //
+        if ($request->isMethod('post')){
+            $data = $request->all();
+
+            // validate the data
+            $this->validate($request, [
+                'name' => 'required',
+                'email' => 'required|email',
+                'faculty_id' => 'required',
+            ]);
+
+            $user_update = DB::table('users')->where(['id'=>$id])->update([
+                'name' => $data['name'],
+                'email' => $data['email'],
+//                'password' => Hash::make($data['password']),
+                'faculty_id' => $data['faculty_id']
+            ]);
+
+            if($user_update){ //if this request is successful
+                return redirect('/users')->with('success', 'User Updated successfully');
+            }else{
+                return redirect('/users')->with('error', 'Failed to update user, please make sure you are connected to the server');
+            }
+
+        }
     }
 
     /**
@@ -229,33 +262,119 @@ class UserController extends Controller
                 return redirect('/users')->with('error', 'Failed to add user, please make sure you are connected to the server');
             }
 
-
-//            $data['password'] = Hash::make($data['password']);
-////            $data->faculty_id => $data['faculty_id'];
-//            $user = User::create($data);
-//            $user->assignRole($data['role']);
-//
-//            //Redirect to users page
-//            if($user){
-//                return redirect('/users')->with('success', 'User added successfully');
-//            }else{
-//                return redirect('/users')->with('error', 'Failed to add user check that you are connected to the database');
-//            }
-
-
-            // perform add
-//            $addUser = DB::table('users')->insert([
-//                'name'=>$data['name'],
-//                'email'=>$data['email'],
-//                'password'=> Hash::make($data['password']),
-//                'faculty_id'=>$data['faculty_id'],
-//                'department_id'=>$data['department_id'],
-//            ]);
-//            if($addUser){
-//                return redirect('/users')->with('success', 'User added to Faculty Successfully');
-//            }else{
-//                return redirect('/users')->with('error', 'Failed to add user to faculty, make sure you are connected to the server');
-//            }
         }
+    }
+
+    public function editFacultyUser($id=null, Request $request){
+
+        if ($request->isMethod('post')){
+            $data = $request->all();
+
+            // validate the data
+            $this->validate($request, [
+                'name' => 'required',
+                'email' => 'required|email',
+                'department_id' => 'required',
+                'roles' => 'required'
+            ]);
+
+            $user = DB::table('users')->where(['id'=>$id])->first();
+
+//            $user_role = $user->roles->pluck('name', 'name')->all();
+
+
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->faculty_id = $request->input('faculty_id');
+            $user->department_id = $request->input('department_id');
+//            $user->save();
+
+            $role_id = $request->input('roles');
+            // Get the obj of the current role
+            $curr_role = Role::findByName($user->roles->pluck('name')->implode(' '));
+
+            $curr_role = json_decode(json_encode($curr_role));
+            echo "<pre>"; print_r($curr_role); die();
+
+
+            // Retrieve the name, email and password fields
+//            $input = $request->only(['name', 'email', 'password', 'department_id']);
+//            $roles = $request['roles']; //retrieve all roles
+//
+//            $user->forceFill($input)->save();
+//
+//            if (isset($roles)){
+//                //If one or more role is selected associate user to roles
+//                $user->roles()->sync($roles);
+//            }else{
+//                //If no role is selected remove existing role associated to a user
+//                $user->roles()->deta+ch();
+//            }
+            return redirect('/users')->with('success', 'User Updated successfully');
+
+
+
+//            $user = DB::table('users')->where(['id'=>$id])->first();
+//            $user->name = $request->input('name');
+//            $user->email = $request->input('email');
+//            $user->faculty_id = $request->input('faculty_id');
+//            $user->department_id = $request->input('department_id');
+//            $user->save();
+//
+//            $role_id = $request->input('role');
+//            // Get the obj of the current role
+//            $curr_role = Role::findByName($user->roles->pluck('name')->implode(' '));
+//            //get the object of the new role
+//            $new_role = Role::where(['id'=>$role_id])->firstOrFail();
+//
+//            //First remove current role
+//            $user->removeRole($curr_role);
+//
+//            // Then assign new role
+//            $user->assignRole($new_role);
+//
+//            if($user){
+//                return redirect('/users')->with('success', 'User Updated successfully');
+//            }else{
+//                return redirect('/users')->with('error', 'Failed to update user, please make sure you are connected to the server');
+//            }
+
+        }
+
+        // Get all departments whose faculty id is same as that of the faculty administrator
+        $auth_user_fac_id = Auth::user()->faculty_id;
+
+        $departments = DB::table('departments')->where(['faculty_id'=>$auth_user_fac_id])->get();
+        $roles = Role::all();
+        $user = DB::table('users')->where(['id'=>$id])->first();
+        $faculties = DB::table('faculties')->get();
+        return view('users.edit-fac-user')->with(compact('departments', 'user', 'faculties', 'roles'));
+    }
+
+    public function addMaintainer(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            //Validate the data
+            $this->validate($request, [
+                'name' => ['required', 'unique:users'],
+                'password' => ['required', 'confirmed', 'min:8'],
+                'email' => ['required', 'email', 'unique:users'],
+                'maintainer' => ['required']
+            ]);
+
+            $user = new User();
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->password = Hash::make($request->input('password'));
+            $user->maintainer = $request->input('maintainer');
+            $user->save();
+
+            if($user){
+                return redirect('/users')->with('success', 'System Maintainer added successfully');
+            }else{
+                return redirect()->back()->with('error', 'failed to add system maintainer, Please make sure you are connected to the server');
+            }
+        }
+        return view('users.add-maintainer');
     }
 }

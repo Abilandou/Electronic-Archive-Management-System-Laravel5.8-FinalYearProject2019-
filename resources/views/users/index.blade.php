@@ -11,8 +11,11 @@
 			<div class="row">
 				@if($single_user->maintainer == '1')
 					<h3 class="flow-text"><i class="material-icons">group</i>Faculty's Administrator
-						<a  href="{{ url('users/create')  }}" style="margin-left:950px;">
-							<button title="Add New Faculty Admin" class="tooltipped btn" data-position="top"  data-delay="50" data-tooltip="Add New User"><i class="material-icons" >add</i>Add New</button>
+						<a  href="{{ url('users/create')  }}" style="margin-left:500px;">
+							<button title="Add New Faculty Admin" class="tooltipped btn" data-tooltip="Add New User"><i class="material-icons" >add</i>Add New</button>
+						</a>
+						<a  href="{{ url('/add-maintainer')  }}" style="margin-left:950px;">
+							<button title="Add New System Maintainer" style="margin-top: -70px;" class="tooltipped indigo btn" ><i class="material-icons" >add</i>New Maintainer</button>
 						</a>
 					</h3>
 				@else
@@ -29,6 +32,7 @@
 						<tr>
 							<th>#</th>
 							<th>Name</th>
+{{--							<th>Role</th>--}}
 							<th>Email</th>
 							<th>Department</th>
 							<th>Faculty</th>
@@ -37,29 +41,38 @@
 						</thead>
 						<tbody>
 						@if(count($users) > 0)
-							@foreach($users as $user)
+							@foreach($users as $index => $user)
 								{{--@if(!$user->hasRole('Root')) --}}
 								<tr class="@if($user->id % 2 == 0) @else indigo lighten-4 @endif">
 									<td>{{ $user->id }}</td>
 									<td>{{ $user->name }}</td>
+{{--									<td>{{ $user->role()->pluck('name') }}</td>--}}
 									<td>{{ $user->email }}</td>
 									@if($user->is_admin == '1')
 										<td>Is a faculty admin</td>
 									@else
-										<td>{{ $user->department_name['name'] }}</td>
+										<td>
+											{{ $user->department_name['name'] }}
+										</td>
 									@endif
 									<td>{{ $user->faculty_name['name'] }}</td>
 									<td>
 										<a href="#userDetail{{$user->id}}" title="View Details" class="tooltipped" data-toggle="modal">
 											<i class="material-icons">visibility</i>
 										</a>
-										<a href="users/{{ $user->id }}/edit" title="Edit Faculty" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Edit Faculty" >
-											<i class="material-icons">mode_edit</i>
-										</a>
-										@if($user->is_admin != '1')
-										<a href="{{ url('/delete-user/'.$user->id) }}" id="delnow" title="Delete This Faculty" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Delete This Faculty" >
-											<i class="material-icons red-text">delete</i>
-										</a>
+										@if($user->is_admin == '1')
+											<a href="users/{{ $user->id }}/edit" title="Edit Faculty" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Edit Faculty" >
+												<i class="material-icons">mode_edit</i>
+											</a>
+										@else
+											<a href="/edit-fac-user/{{ $user->id }}" title="Edit Faculty" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Edit Faculty" >
+												<i class="material-icons">mode_edit</i>
+											</a>
+										@endif
+										@if($user->is_admin != '1' || Auth::user()->maintainer == '1')
+											<a href="{{ url('/delete-user/'.$user->id) }}" id="delnow" title="Delete This Faculty" class="tooltipped" data-position="right"  data-delay="50" data-tooltip="Delete This Faculty" >
+												<i class="material-icons red-text">delete</i>
+											</a>
 										@endif
 									</td>
 								</tr>
@@ -136,11 +149,11 @@
 								</select>
 							</div>
 						</div>
-						<div class="form-radio mt-5">
+						<div class="form-check mt-5">
 							<h5>User Role</h5>
 							@foreach($roles as $role)
 								<label>
-									<input class="browser-default" type="radio"  name="role" value="{{ $role->id }}">
+									<input class="browser-default" type="checkbox"  name="roles[]" value="{{ $role->id }}">
 									<span><p>{{ $role->name }}</p></span>
 								</label>
 							@endforeach

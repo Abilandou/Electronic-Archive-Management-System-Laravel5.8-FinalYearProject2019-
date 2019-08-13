@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use HasRoles;
-use HasPermissions;
+use     Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Traits\HasPermissions;
 
 
 class RoleController extends Controller
@@ -25,6 +25,7 @@ class RoleController extends Controller
         foreach ($roles as $key => $value) {
             $permission_name = DB::table('role_has_permissions')->where(['role_id'=>$value->id])->first();
             $roles[$key]->permission_name = $permission_name;
+            $single_role = Role::where(['id'=>$key])->first();
             # code...
         }
         $permissions = DB::table('permissions')->get();
@@ -88,11 +89,14 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role, $id=null)
+    public function edit($role=null)
     {
         //
-        $single_role = DB::table('roles')->where(['id'=>$id])->first();
-        return view('roles.index', ['single_role'=>$single_role]);
+        $roles = Role::all();
+        $permissions = Permission::all();
+        $single_role = Role::where(['id'=>$role])->first();
+
+        return view('roles.edit', ['single_role'=>$single_role, 'roles'=>$roles, 'permissions'=>$permissions]);
     }
 
     /**
@@ -102,9 +106,48 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, Role $role, $id=null)
     {
         //
+        if($request->isMethod('post')){
+            $data = $request->all();
+
+            $this->validate($request, [
+                'name' => 'required|max:15',
+                'permissions' => 'required'
+            ]);
+
+            $update_role = DB::table('roles')->where(['id'=>$id])->update([
+                'name' => $data['name']
+            ]);
+            if($update_role){
+                return redirect('/roles')->with('success', 'Permission '.$data['name'].' Updated successfully');
+            }else{
+                return redirect('/roles')->with('error', 'Failed to update this permission, please make sure you are connected to the server');
+            }
+//            $input = $request->except(['permissions']);
+//
+//            $permissions = $request['permissions'];
+////            $rrrel = json_decode(json_encode($input));
+////            echo "<pre>"; print_r($rrrel); die();
+//            //save role name
+//            $role->update($input);
+//
+//            //all permissions
+//            $p_all = Permission::all();
+//            foreach ($p_all as $perm){
+//                $role->revokePermissionTo($perm);
+//            }
+//            //Looping through selected permissions
+//            foreach ($permissions as $permission){
+//                //get corresponding form permission in the db
+//                $perm = Permission::where('id', $permission)->firstOrFail();
+//                $role->givePermissionTo($perm);
+//            }
+//
+//            return redirect('/roles')->with('success', 'Role updated successfully');
+
+        }
     }
 
     /**
@@ -116,8 +159,8 @@ class RoleController extends Controller
     public function destroy(Role $role, $id=null)
     {
         //
-        $delrole = DB::table('roles')->where(['id'=>$id])->delete();
-        if($delrole){
+        $del_role = DB::table('roles')->where(['id'=>$id])->delete();
+        if($del_role){
             return redirect()->back()->with('success', 'Role deleted successfully');
         }else{
             return redirect()->back()->with('error', 'Could not delete role at this moment, check that you are connected to the server.');

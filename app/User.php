@@ -40,22 +40,22 @@ class User extends Authenticatable
 
     public function department()
     {
-        return $this->belongsTo('App\Department');
+        return $this->belongsTo(Department::class, 'department_id');
     }
 
     public function faculty()
     {
-        return $this->belongsTo('App\Faculty');
+        return $this->belongsTo(Faculty::class);
     }
 
     public function documents()
     {
-        return $this->hasMany('App\User', 'document_users');
+        return $this->hasMany(Document::class, 'document_users');
     }
-    public function role(){
-        return $this->hasOne('App\Role');
+    public function roles(){
+        return $this->hasMany(\Spatie\Permission\Models\Role::class);
     }
     public function permissions(){
-        return $this->hasMany('App\Permission');
+        return $this->hasMany(\Spatie\Permission\Models\Permission::class);
     }
 }

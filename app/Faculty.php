@@ -13,15 +13,16 @@ class Faculty extends Model
 
     public function documents()
     {
-    	return $this->hasMany('App\Document');
+    	return $this->hasMany(Document::class);
     }
 
-//    public function departments()
-//    {
-//    	return $this->hasMany(Department::class, 'faculty_id');
-//    }
-    public function faculties()
+    public function departments()
     {
-        return $this->hasMany('App\Faculty', 'faculty_id');
+    	return $this->hasMany(Department::class);
     }
+
+    public function users(){
+        return $this->hasMany(User::class);
+    }
+
 }

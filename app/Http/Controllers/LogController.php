@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Log;
+//use App\Log;
+use App\Helpers\Log;
 use Illuminate\Http\Request;
 
 class LogController extends Controller
@@ -10,8 +11,23 @@ class LogController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Routing\ControllerMiddlewareOptions
      */
+//     public function __construct() {
+//         return $this->middleware(['auth','permission:share']);
+//     }
+
+    public function log()
+    {
+        $logs = Log::logLists();
+        return view('pages.logs', ['logs'=>$logs]);
+    }
+
+    public function logdel()
+    {
+        Log::logDelete();
+        return redirect('/logs');
+    }
     public function index()
     {
         //

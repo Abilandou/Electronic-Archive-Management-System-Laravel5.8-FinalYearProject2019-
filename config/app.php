@@ -166,6 +166,9 @@ return [
          * Package Service Providers...
          */
 
+        Skydiver\LaravelMaterializeCSS\MaterializeCSSServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -174,8 +177,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Skydiver\LaravelMaterializeCSS\MaterializeCSSServiceProvider::class,
-        Spatie\Permission\PermissionServiceProvider::class,
+
 
 
     ],
